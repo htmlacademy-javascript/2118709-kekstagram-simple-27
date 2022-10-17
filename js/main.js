@@ -1,43 +1,33 @@
 // Функция, возвращающая случайное целое число из переданного диапазона включительно
 
-// function getRandomNumber (min, max) {
-//   if (min < 0 || max < 0) {
-//     return NaN;
-//   }
-//   const minimum = Math.ceil(min);
-//   const maximum = Math.floor(max);
-//   if (maximum > minimum ){
-//     return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-//   }
-//   return NaN;
-// }
+function getRandom (min, max) {
+  if (min < 0 || max < 0) {
+    return NaN;
+  }
+  const minimum = Math.ceil(min);
+  const maximum = Math.floor(max);
+  if (maximum > minimum ){
+    return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
+  }
+  return NaN;
+}
 
-// getRandomNumber(3,50);
+getRandom(3,50);
 
 
-//Функция для проверки максимальной длины строки.
+// Функция для проверки максимальной длины строки.
 
-// function checkStringLength (string, maxLength, minLength) {
-//   return string.length <= maxLength && string.length >= minLength;
-// }
+function checkStringLength (string, maxLength, minLength) {
+  return string.length <= maxLength && string.length >= minLength;
+}
 
-// checkStringLength('', 140, 20);
+checkStringLength('', 140, 20);
 
 
 //Домашняя работа module 4
 const SIMILAR_PHOTO_COUNT = 25;
 
-const LIKES_COUNT = {
-  min:15,
-  max:200,
-};
-
-const COMMENTS_COUNT = {
-  min:0,
-  max:200,
-};
-
-const DESCRIPTION = [
+const DESCRIPTIONS = [
   'Белки в парке - я в порядке',
   'Милый песик',
   'Лето, солнце, жара',
@@ -65,11 +55,11 @@ const getRandomArrayElement = (array) => array[getRandomNumber(0, array.length -
 const createPhotoDescription = () => ({
   id: getRandomNumber(1,SIMILAR_PHOTO_COUNT),
   url: `photos/${getRandomNumber(1,SIMILAR_PHOTO_COUNT)}.jpg`,
-  description:getRandomArrayElement(DESCRIPTION),
-  likes: getRandomNumber(LIKES_COUNT.min,LIKES_COUNT.max),
-  comments:getRandomNumber(COMMENTS_COUNT.min,COMMENTS_COUNT.max),
+  description:getRandomArrayElement(DESCRIPTIONS),
+  likes: getRandomNumber(15,200),
+  comments:getRandomNumber(0,200),
 });
 
-const similarPhotoDescription = Array.from({length: SIMILAR_PHOTO_COUNT},createPhotoDescription);
+const similarPhotoDescription = () => Array.from({length: SIMILAR_PHOTO_COUNT},createPhotoDescription);
 
 similarPhotoDescription();
