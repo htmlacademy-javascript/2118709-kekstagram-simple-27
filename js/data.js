@@ -12,14 +12,14 @@ const DESCRIPTIONS = [
   'Закат на пляже',
 ];
 
-const createPhotoDescription = () => ({
-  id: getRandomNumber(1,SIMILAR_PHOTO_COUNT),
-  url: `photos/${getRandomNumber(1,SIMILAR_PHOTO_COUNT)}.jpg`,
+const createPhoto = (index) => ({
+  id: index,
+  url: `photos/${index}.jpg`,
   description:getRandomArrayElement(DESCRIPTIONS),
   likes: getRandomNumber(15,200),
   comments:getRandomNumber(0,200),
 });
 
-const similarPhotoDescription = () => Array.from({length: SIMILAR_PHOTO_COUNT},createPhotoDescription);
+const getPhotos = () => Array.from({length: SIMILAR_PHOTO_COUNT}, (_, photoIndex) => createPhoto(photoIndex + 1));
 
-export {similarPhotoDescription};
+export {getPhotos};
