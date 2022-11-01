@@ -1,3 +1,5 @@
-import {similarPhotoDescription} from './data.js';
+import {getPhotos} from './data.js';
+import {createThumbnail} from './thumbnail.js';
+const photos = getPhotos();
 
-similarPhotoDescription();
+createThumbnail(photos);
