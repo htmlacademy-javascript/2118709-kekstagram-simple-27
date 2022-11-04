@@ -21,7 +21,6 @@ function checkStringLength (string, maxLength, minLength) {
 }
 checkStringLength('', 140, 20);
 
-//Escape tab
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
 export {getRandomNumber, getRandomArrayElement, isEscapeKey};

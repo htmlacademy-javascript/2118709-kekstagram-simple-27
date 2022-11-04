@@ -47,10 +47,10 @@ const onChangeFile = () => {
   openModal();
 };
 
-const allModal = () => {
+const initModals = () => {
   downloadImageButton.addEventListener('change', onChangeFile);
   cancelButton.addEventListener('click', onCancelButtonClick);
   imageForm.addEventListener('submit', onFormSubmit);
 };
 
-export {allModal};
+export {initModals};
