@@ -1,5 +1,11 @@
-import {getPhotos} from './data.js';
-import {createThumbnail} from './thumbnail.js';
-const photos = getPhotos();
+import {generatePhotos} from './data.js';
+import {renderPhotoThumbnail} from './thumbnail.js';
+import {initModals} from './form.js';
 
-createThumbnail(photos);
+const PHOTO_COUNT = 25;
+
+const photos = generatePhotos(PHOTO_COUNT);
+
+renderPhotoThumbnail(photos);
+
+initModals();

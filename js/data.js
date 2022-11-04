@@ -1,8 +1,7 @@
-import {getRandomNumber,getRandomArrayElement} from './util.js';
+import {getRandomNumber, getRandomArrayElement} from './util.js';
 
-const SIMILAR_PHOTO_COUNT = 25;
 
-const DESCRIPTIONS = [
+const description = [
   'Белки в парке - я в порядке',
   'Милый песик',
   'Лето, солнце, жара',
@@ -12,14 +11,14 @@ const DESCRIPTIONS = [
   'Закат на пляже',
 ];
 
-const createPhoto = (index) => ({
+const generatePhoto = (index) => ({
   id: index,
   url: `photos/${index}.jpg`,
-  description:getRandomArrayElement(DESCRIPTIONS),
+  description: getRandomArrayElement(description),
   likes: getRandomNumber(15,200),
-  comments:getRandomNumber(0,200),
+  comments: getRandomNumber(0,200),
 });
 
-const getPhotos = () => Array.from({length: SIMILAR_PHOTO_COUNT}, (_, photoIndex) => createPhoto(photoIndex + 1));
+const generatePhotos = (count) => Array.from({length: count}, (_, index) => generatePhoto(index + 1));
 
-export {getPhotos};
+export {generatePhotos};
