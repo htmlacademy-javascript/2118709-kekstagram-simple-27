@@ -1,11 +1,10 @@
 import {isEscapeKey} from './util.js';
 
-const bodyElement = document.querySelector('body');
-const imageWindow = bodyElement.querySelector('.img-upload');
+const imageWindow = document.querySelector('.img-upload');
 const imageForm = imageWindow.querySelector('.img-upload__form');
 const imageFormOverlay = imageForm.querySelector('.img-upload__overlay');
 const cancelButton = imageFormOverlay.querySelector('.img-upload__cancel');
-const downloadImageButton = imageForm.querySelector('#upload-file');
+const uploadFileButton = imageForm.querySelector('#upload-file');
 
 const pristine = new Pristine(imageForm,{
   classTo: 'img-upload__text',
@@ -14,13 +13,16 @@ const pristine = new Pristine(imageForm,{
 });
 
 const onFormSubmit = (evt) => {
-  evt.preventDefault();
-  pristine.validate();
+  if ( pristine.validate()) {
+    evt.preventDefault();
+  } else {
+    evt.preventDefault();
+  }
 };
 
 const openModal = () => {
   imageFormOverlay.classList.remove('hidden');
-  bodyElement.classList.add('modal-open');
+  document.body.classList.add('modal-open');
   document.addEventListener('keydown', onEscapeKeydown);
 };
 
@@ -28,7 +30,7 @@ const closeModal = () => {
   imageForm.reset();
   pristine.reset();
   imageFormOverlay.classList.add('hidden');
-  bodyElement.classList.remove('modal-open');
+  document.body.classList.remove('modal-open');
   document.removeEventListener('keydown', onEscapeKeydown);
 };
 
@@ -48,7 +50,7 @@ const onChangeFile = () => {
 };
 
 const initModals = () => {
-  downloadImageButton.addEventListener('change', onChangeFile);
+  uploadFileButton.addEventListener('change', onChangeFile);
   cancelButton.addEventListener('click', onCancelButtonClick);
   imageForm.addEventListener('submit', onFormSubmit);
 };
