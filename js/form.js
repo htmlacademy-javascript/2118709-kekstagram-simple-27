@@ -1,4 +1,6 @@
 import {isEscapeKey} from './util.js';
+import {resetValue} from './scale.js';
+import {resetEffects} from './effects.js';
 
 const imageWindow = document.querySelector('.img-upload');
 const imageForm = imageWindow.querySelector('.img-upload__form');
@@ -28,6 +30,8 @@ const openModal = () => {
 
 const closeModal = () => {
   imageForm.reset();
+  resetValue();
+  resetEffects();
   pristine.reset();
   imageFormOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
