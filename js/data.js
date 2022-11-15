@@ -1,7 +1,7 @@
 import {getRandomNumber, getRandomArrayElement} from './util.js';
 
 
-const description = [
+const descriptions = [
   'Белки в парке - я в порядке',
   'Милый песик',
   'Лето, солнце, жара',
@@ -14,7 +14,7 @@ const description = [
 const generatePhoto = (index) => ({
   id: index,
   url: `photos/${index}.jpg`,
-  description: getRandomArrayElement(description),
+  description: getRandomArrayElement(descriptions),
   likes: getRandomNumber(15,200),
   comments: getRandomNumber(0,200),
 });
