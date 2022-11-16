@@ -57,7 +57,6 @@ const EFFECTS = [
 
 const DEFAULT_EFFECT = EFFECTS[0];
 let chosenEffect = DEFAULT_EFFECT;
-const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const changeSlider = ()=>{
   filterSlider.classList.remove('hidden');
@@ -69,7 +68,7 @@ const changeSlider = ()=>{
     step: chosenEffect.step,
     start: chosenEffect.max,
   });
-  if (isDefault()) {
+  if (chosenEffect === DEFAULT_EFFECT) {
     filterSlider.classList.add('hidden');
   }
 };
@@ -97,7 +96,7 @@ noUiSlider.create(filterSlider, {
 changeSlider();
 
 
-const onChangeRadio = (evt) => {
+const onRadioChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
@@ -111,7 +110,7 @@ const onChangeRadio = (evt) => {
 const onSliderChange = () => {
   imagePreview.style.filter = 'none';
   filterValue.value = '';
-  if (isDefault()){
+  if (chosenEffect === DEFAULT_EFFECT){
     return;
   }
   const effectValue = filterSlider.noUiSlider.get();
@@ -125,7 +124,7 @@ const resetEffects = () => {
 };
 
 
-form.addEventListener('change', onChangeRadio);
+form.addEventListener('change', onRadioChange);
 filterSlider.noUiSlider.on('update', onSliderChange);
 
 export {resetEffects};

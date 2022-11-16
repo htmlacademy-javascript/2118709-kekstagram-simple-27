@@ -1,12 +1,15 @@
 import {isEscapeKey} from './util.js';
 import {resetValue} from './scale.js';
 import {resetEffects} from './effects.js';
+import {sendData} from './api.js';
+import {showErrorAlert, showSuccessAlert} from './message.js';
 
 const imageWindow = document.querySelector('.img-upload');
 const imageForm = imageWindow.querySelector('.img-upload__form');
 const imageFormOverlay = imageForm.querySelector('.img-upload__overlay');
 const cancelButton = imageFormOverlay.querySelector('.img-upload__cancel');
 const uploadFileButton = imageForm.querySelector('#upload-file');
+const submitButton = imageFormOverlay.querySelector('.img-upload__submit');
 
 const pristine = new Pristine(imageForm,{
   classTo: 'img-upload__text',
@@ -14,12 +17,36 @@ const pristine = new Pristine(imageForm,{
   errorTextClass: 'img-upload__text__error-text'
 });
 
-const onFormSubmit = (evt) => {
-  if ( pristine.validate()) {
+const blockSubmitButton = () => {
+  submitButton.disabled = true;
+  submitButton.textContent = 'Отправляю...';
+};
+
+const unblockSubmitButton = () => {
+  submitButton.disabled = false;
+  submitButton.textContent = 'Опубликовать';
+};
+
+const setUserFormSubmit = (onSuccess) => {
+  imageForm.addEventListener('submit', (evt) => {
     evt.preventDefault();
-  } else {
-    evt.preventDefault();
-  }
+
+    if ( pristine.validate()) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          onSuccess();
+          unblockSubmitButton();
+          showSuccessAlert();
+        },
+        () => {
+          unblockSubmitButton();
+          showErrorAlert();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
 };
 
 const openModal = () => {
@@ -56,7 +83,6 @@ const onChangeFile = () => {
 const initModals = () => {
   uploadFileButton.addEventListener('change', onChangeFile);
   cancelButton.addEventListener('click', onCancelButtonClick);
-  imageForm.addEventListener('submit', onFormSubmit);
 };
 
-export {initModals};
+export {initModals,setUserFormSubmit, closeModal};
