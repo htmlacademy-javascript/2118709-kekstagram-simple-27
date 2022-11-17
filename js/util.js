@@ -1,6 +1,6 @@
-const isEscapeKey = (evt) => evt.key === 'Escape';
-
 const HIDE_MESSAGE_TIMEOUT = 4000;
+
+const isEscapeKey = (evt) => evt.key === 'Escape';
 
 const showGetDataAlert = (message) => {
   const alertContainer = document.createElement('div');
