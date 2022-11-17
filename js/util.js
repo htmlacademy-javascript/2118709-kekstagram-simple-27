@@ -1,17 +1,8 @@
-const getRandomNumber = (min, max)=> {
-  if (min < 0 || max < 0 || max < min) {
-    return NaN;
-  }
-  const minimum = Math.ceil(min);
-  const maximum = Math.floor(max);
-  return Math.floor(Math.random() * (maximum - minimum + 1)) + minimum;
-};
-
-const getRandomArrayElement = (array) => array[getRandomNumber(0, array.length - 1)];
-
 const isEscapeKey = (evt) => evt.key === 'Escape';
 
-const showAlert = (message) => {
+const HIDE_MESSAGE_TIMEOUT = 4000;
+
+const showGetDataAlert = (message) => {
   const alertContainer = document.createElement('div');
   alertContainer.style.zIndex = '100';
   alertContainer.style.position = 'absolute';
@@ -29,7 +20,7 @@ const showAlert = (message) => {
 
   setTimeout(() => {
     alertContainer.remove();
-  }, 4000);
+  }, HIDE_MESSAGE_TIMEOUT);
 };
 
-export {getRandomNumber, getRandomArrayElement, isEscapeKey, showAlert};
+export {isEscapeKey, showGetDataAlert};

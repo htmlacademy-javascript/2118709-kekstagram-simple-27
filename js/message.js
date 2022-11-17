@@ -1,50 +1,69 @@
 import {isEscapeKey} from './util.js';
+import {onFormEscapeKeydown} from './form.js';
 
 const successAlertTemplate = document.querySelector('#success').content.querySelector('.success');
 const errorAlertTemplate = document.querySelector('#error').content.querySelector('.error');
 
-
-const showSuccessAlert = () => {
+const showSuccessMessage = () => {
   const successAlert = successAlertTemplate.cloneNode(true);
   document.body.append(successAlert);
-  const successButton = successAlertTemplate.querySelector('.success__button');
-  successButton.addEventListener('click', onButtonClick);
-  document.addEventListener('click', onOutsideClick);
-  document.addEventListener('keydown', onMessageEscapeKeydown);
+  successAlertTemplate.querySelector('.success__button').addEventListener('click', onSuccessButtonClick);
+  document.addEventListener('click', onSuccessMessageOutsideClick);
+  document.addEventListener('keydown', onSuccessMessageEscapeKeydown);
 };
 
-const showErrorAlert = () => {
-  const errorAlert = errorAlertTemplate.cloneNode(true);
-  document.body.append(errorAlert);
-  const errorButton = errorAlertTemplate.querySelector('.error__button');
-  errorButton.addEventListener('click', onButtonClick);
-  document.addEventListener('click', onOutsideClick);
-  document.addEventListener('keydown', onMessageEscapeKeydown);
-};
-
-const closeAlert = () => {
-  const alertBlock =
-    document.querySelector('.success') || document.querySelector('.error');
-  alertBlock.remove();
-  document.removeEventListener('click', onButtonClick);
-  document.removeEventListener('click', onOutsideClick);
-  document.removeEventListener('keydown', onMessageEscapeKeydown);
-};
-
-function onButtonClick () {
-  closeAlert();
+function onSuccessButtonClick () {
+  closeSuccessMessage();
 }
 
-function onOutsideClick () {
-  closeAlert();
+function onSuccessMessageOutsideClick () {
+  closeSuccessMessage();
 }
 
-
-function onMessageEscapeKeydown(evt) {
+function onSuccessMessageEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
-    closeAlert();
+    closeSuccessMessage();
   }
 }
 
-export {showErrorAlert, showSuccessAlert};
+function closeSuccessMessage() {
+  document.removeEventListener('click', onSuccessButtonClick);
+  document.removeEventListener('click', onSuccessMessageOutsideClick);
+  document.removeEventListener('keydown', onSuccessMessageEscapeKeydown);
+  document.querySelector('.success').remove();
+}
+
+
+const showErrorMessage = () => {
+  const errorAlert = errorAlertTemplate.cloneNode(true);
+  document.body.append(errorAlert);
+  errorAlertTemplate.querySelector('.error__button').addEventListener('click', onErrorButtonClick);
+  document.addEventListener('click', onErrorMessageOutsideClick);
+  document.addEventListener('keydown', onErrorMessageEscapeKeydown);
+};
+
+function onErrorButtonClick () {
+  closeErrorMessage();
+}
+
+function onErrorMessageOutsideClick () {
+  closeErrorMessage();
+}
+
+function onErrorMessageEscapeKeydown(evt) {
+  if (isEscapeKey(evt)) {
+    evt.preventDefault();
+    closeErrorMessage();
+  }
+}
+
+function closeErrorMessage() {
+  document.removeEventListener('click', onErrorButtonClick);
+  document.removeEventListener('click', onErrorMessageOutsideClick);
+  document.removeEventListener('keydown', onErrorMessageEscapeKeydown);
+  document.removeEventListener('keydown', onFormEscapeKeydown);
+  document.querySelector('.error').remove();
+}
+
+export {showErrorMessage, showSuccessMessage};

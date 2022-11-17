@@ -1,17 +1,20 @@
-import {showAlert} from './util.js';
+import {showGetDataAlert} from './util.js';
+
+const GET_DATA_URL = 'https://27.javascript.pages.academy/kekstagram-simple/data';
+const SEND_DATA_URL = 'https://27.javascript.pages.academy/kekstagram-simple';
 
 const getData = (onSuccess) => {
-  fetch('https://27.javascript.pages.academy/kekstagram-simple/data')
+  fetch(GET_DATA_URL)
     .then((response) => response.json())
     .then(onSuccess)
     .catch(() => {
-      showAlert ('Ошибка загрузки данных. Перезагрузите страницу');
+      showGetDataAlert ('Ошибка загрузки данных. Перезагрузите страницу');
     });
 };
 
 const sendData = (onSuccess, onFail, body) => {
   fetch(
-    'https://27.javascript.pages.academy/kekstagram-simple',
+    SEND_DATA_URL,
     {
       method: 'POST',
       body,

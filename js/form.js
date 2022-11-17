@@ -2,7 +2,7 @@ import {isEscapeKey} from './util.js';
 import {resetValue} from './scale.js';
 import {resetEffects} from './effects.js';
 import {sendData} from './api.js';
-import {showErrorAlert, showSuccessAlert} from './message.js';
+import {showErrorMessage, showSuccessMessage} from './message.js';
 
 const imageWindow = document.querySelector('.img-upload');
 const imageForm = imageWindow.querySelector('.img-upload__form');
@@ -27,45 +27,46 @@ const unblockSubmitButton = () => {
   submitButton.textContent = 'Опубликовать';
 };
 
-const setUserFormSubmit = (onSuccess) => {
-  imageForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-
-    if ( pristine.validate()) {
-      blockSubmitButton();
-      sendData(
-        () => {
-          onSuccess();
-          unblockSubmitButton();
-          showSuccessAlert();
-        },
-        () => {
-          unblockSubmitButton();
-          showErrorAlert();
-        },
-        new FormData(evt.target),
-      );
-    }
-  });
-};
-
-const openModal = () => {
+function openModal() {
   imageFormOverlay.classList.remove('hidden');
   document.body.classList.add('modal-open');
-  document.addEventListener('keydown', onEscapeKeydown);
-};
+  document.addEventListener('keydown', onFormEscapeKeydown);
+  imageForm.addEventListener('submit',onFormSubmit);
+}
 
-const closeModal = () => {
+function closeModal() {
   imageForm.reset();
   resetValue();
   resetEffects();
   pristine.reset();
   imageFormOverlay.classList.add('hidden');
   document.body.classList.remove('modal-open');
-  document.removeEventListener('keydown', onEscapeKeydown);
-};
+  document.removeEventListener('keydown', onFormEscapeKeydown);
+  imageForm.removeEventListener('submit',onFormSubmit);
+}
 
-function onEscapeKeydown(evt) {
+function onFormSubmit (evt) {
+  evt.preventDefault();
+
+  if (pristine.validate()) {
+    blockSubmitButton();
+    sendData(
+      () => {
+        closeModal();
+        unblockSubmitButton();
+        showSuccessMessage();
+      },
+      () => {
+        unblockSubmitButton();
+        document.removeEventListener('keydown', onFormEscapeKeydown);
+        showErrorMessage();
+      },
+      new FormData(evt.target),
+    );
+  }
+}
+
+function onFormEscapeKeydown(evt) {
   if (isEscapeKey(evt)) {
     evt.preventDefault();
     closeModal();
@@ -76,13 +77,13 @@ const onCancelButtonClick = () => {
   closeModal();
 };
 
-const onChangeFile = () => {
+const onFileChange = () => {
   openModal();
 };
 
-const initModals = () => {
-  uploadFileButton.addEventListener('change', onChangeFile);
+const initFormModal = () => {
+  uploadFileButton.addEventListener('change', onFileChange);
   cancelButton.addEventListener('click', onCancelButtonClick);
 };
 
-export {initModals,setUserFormSubmit, closeModal};
+export {initFormModal, onFormEscapeKeydown};

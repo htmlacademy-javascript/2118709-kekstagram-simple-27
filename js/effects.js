@@ -73,29 +73,6 @@ const changeSlider = ()=>{
   }
 };
 
-noUiSlider.create(filterSlider, {
-  range: {
-    min: DEFAULT_EFFECT.min,
-    max: DEFAULT_EFFECT.max,
-  },
-  start: DEFAULT_EFFECT.max,
-  step: DEFAULT_EFFECT.step,
-  connect: 'lower',
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
-  },
-});
-changeSlider();
-
-
 const onRadioChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
@@ -124,7 +101,31 @@ const resetEffects = () => {
 };
 
 
-form.addEventListener('change', onRadioChange);
-filterSlider.noUiSlider.on('update', onSliderChange);
+const initSlider = () => {
+  noUiSlider.create(filterSlider, {
+    range: {
+      min: DEFAULT_EFFECT.min,
+      max: DEFAULT_EFFECT.max,
+    },
+    start: DEFAULT_EFFECT.max,
+    step: DEFAULT_EFFECT.step,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+  changeSlider();
 
-export {resetEffects};
+  form.addEventListener('change', onRadioChange);
+  filterSlider.noUiSlider.on('update', onSliderChange);
+};
+
+export {resetEffects, initSlider};
