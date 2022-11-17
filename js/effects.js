@@ -57,7 +57,6 @@ const EFFECTS = [
 
 const DEFAULT_EFFECT = EFFECTS[0];
 let chosenEffect = DEFAULT_EFFECT;
-const isDefault = () => chosenEffect === DEFAULT_EFFECT;
 
 const changeSlider = ()=>{
   filterSlider.classList.remove('hidden');
@@ -69,35 +68,12 @@ const changeSlider = ()=>{
     step: chosenEffect.step,
     start: chosenEffect.max,
   });
-  if (isDefault()) {
+  if (chosenEffect === DEFAULT_EFFECT) {
     filterSlider.classList.add('hidden');
   }
 };
 
-noUiSlider.create(filterSlider, {
-  range: {
-    min: DEFAULT_EFFECT.min,
-    max: DEFAULT_EFFECT.max,
-  },
-  start: DEFAULT_EFFECT.max,
-  step: DEFAULT_EFFECT.step,
-  connect: 'lower',
-  format: {
-    to: function (value) {
-      if (Number.isInteger(value)) {
-        return value.toFixed(0);
-      }
-      return value.toFixed(1);
-    },
-    from: function (value) {
-      return parseFloat(value);
-    },
-  },
-});
-changeSlider();
-
-
-const onChangeRadio = (evt) => {
+const onRadioChange = (evt) => {
   if (!evt.target.classList.contains('effects__radio')) {
     return;
   }
@@ -111,7 +87,7 @@ const onChangeRadio = (evt) => {
 const onSliderChange = () => {
   imagePreview.style.filter = 'none';
   filterValue.value = '';
-  if (isDefault()){
+  if (chosenEffect === DEFAULT_EFFECT){
     return;
   }
   const effectValue = filterSlider.noUiSlider.get();
@@ -125,7 +101,31 @@ const resetEffects = () => {
 };
 
 
-form.addEventListener('change', onChangeRadio);
-filterSlider.noUiSlider.on('update', onSliderChange);
+const initSlider = () => {
+  noUiSlider.create(filterSlider, {
+    range: {
+      min: DEFAULT_EFFECT.min,
+      max: DEFAULT_EFFECT.max,
+    },
+    start: DEFAULT_EFFECT.max,
+    step: DEFAULT_EFFECT.step,
+    connect: 'lower',
+    format: {
+      to: function (value) {
+        if (Number.isInteger(value)) {
+          return value.toFixed(0);
+        }
+        return value.toFixed(1);
+      },
+      from: function (value) {
+        return parseFloat(value);
+      },
+    },
+  });
+  changeSlider();
 
-export {resetEffects};
+  form.addEventListener('change', onRadioChange);
+  filterSlider.noUiSlider.on('update', onSliderChange);
+};
+
+export {resetEffects, initSlider};

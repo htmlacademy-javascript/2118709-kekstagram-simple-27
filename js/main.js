@@ -1,11 +1,13 @@
-import {generatePhotos} from './data.js';
 import {renderPhotoThumbnail} from './thumbnail.js';
-import {initModals} from './form.js';
+import {initSlider} from './effects.js';
+import {initFormModal} from './form.js';
+import {getData} from './api.js';
 
 const PHOTO_COUNT = 25;
 
-const photos = generatePhotos(PHOTO_COUNT);
+initSlider();
+initFormModal();
 
-renderPhotoThumbnail(photos);
-
-initModals();
+getData((photos)=> {
+  renderPhotoThumbnail(photos.slice(0,PHOTO_COUNT));
+});
